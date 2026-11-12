@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Signature Agreement</title>
+  <!-- Load a cursive handwriting font from Google Fonts -->
+  <link href="https://googleapis.com" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 90%;
+    }
+    h2 {
+      margin-top: 0;
+      color: #222;
+    }
+    p {
+      color: #555;
+      line-height: 1.5;
+    }
+    .input-group {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 16px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0052a3;
+    }
+    .signature-box {
+      display: none;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 2px solid #222;
+    }
+    .signature-text {
+      font-family: 'Caveat', cursive;
+      font-size: 36px;
+      color: #1a237e;
+      margin: 0;
+    }
+    .timestamp {
+      font-size: 12px;
+      color: #777;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Acknowledgment</h2>
+    <p>
+      Silly Chilli McDilly died yesterday in a car crash. Please write your name under to respect our past pickle lover:
+.
+    </p>
+
+    <!-- Input Box (Shown only before signing) -->
+    <div id="inputSection" class="input-group">
+      <input type="text" id="nameInput" placeholder="Type your full name..." />
+      <button onclick="saveSignature()">Sign</button>
+    </div>
+
+    <!-- Saved Signature Display (Locked after signing) -->
+    <div id="signatureSection" class="signature-box">
+      <p id="signedName" class="signature-text"></p>
+      <p id="signedDate" class="timestamp"></p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY_NAME = "saved_digital_signature";
+    const STORAGE_KEY_DATE = "saved_digital_signature_date";
+
+    // Check if a signature is already saved when the page loads
+    window.onload = function () {
+      const savedName = localStorage.getItem(STORAGE_KEY_NAME);
+      const savedDate = localStorage.getItem(STORAGE_KEY_DATE);
+
+      if (savedName) {
+        displayLockedSignature(savedName, savedDate);
+      }
+    };
+
+    function saveSignature() {
+      const input = document.getElementById("nameInput");
+      const name = input.value.trim();
+
+      if (name === "") {
+        alert("Please enter your name before signing.");
+        return;
+      }
+
+      const dateString = "Digitally signed on " + new Date().toLocaleString();
+
+      // Save permanently in browser storage
+      localStorage.setItem(STORAGE_KEY_NAME, name);
+      localStorage.setItem(STORAGE_KEY_DATE, dateString);
+
+      displayLockedSignature(name, dateString);
+    }
+
+    function displayLockedSignature(name, dateString) {
+      document.getElementById("inputSection").style.display = "none";
+      document.getElementById("signedName").textContent = name;
+      document.getElementById("signedDate").textContent = dateString;
+      document.getElementById("signatureSection").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
